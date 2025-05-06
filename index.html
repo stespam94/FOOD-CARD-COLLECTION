@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FOOD COLLECTION</title>
+  <style>
+    body { text-align: center; font-family: sans-serif; background: #222; color: white; }
+    .section { margin: 20px 0; }
+    .card { width: 200px; height: 300px; margin: 10px; display: inline-block; border-radius: 10px; background-size: cover; background-position: center; transition: transform 0.3s ease; cursor: pointer; }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .overlay-content {
+      display: flex;
+      gap: 20px;
+    }
+    .overlay-card {
+      width: 300px;
+      height: 450px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.7);
+      transition: transform 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <h1>FOOD COLLECTION</h1>
+
+  <div class="section" id="regular-section">
+    <h2>CARTE REGOLARI</h2>
+    <div id="regular-cards"></div>
+  </div>
+
+  <div class="section" id="rainbow-section">
+    <h2>CARTE RAINBOW HOLO</h2>
+    <div id="rainbow-cards"></div>
+  </div>
+
+  <div id="overlay" class="overlay" onclick="closeOverlay()">
+    <div class="overlay-content">
+      <div id="overlay-front" class="overlay-card"></div>
+      <div id="overlay-back" class="overlay-card"></div>
+    </div>
+  </div>
+
+  <script>
+    const regularCards = [
+    { front: './images/card1.png', back: './images/back1.png' },
+  { front: './images/card2.png', back: './images/back2.png' },
+  { front: './images/card3.png', back: './images/back3.png' },
+  { front: './images/card4.png', back: './images/back4.png' },
+  { front: './images/card5.png', back: './images/back5.png' },
+  { front: './images/card6.png', back: './images/back6.png' },
+  { front: './images/card7.png', back: './images/back7.png' },
+  { front: './images/card8.png', back: './images/back8.png' },
+  { front: './images/card9.png', back: './images/back9.png' },
+  { front: './images/card10.png', back: './images/back10.png' },
+  { front: './images/card11.png', back: './images/back11.png' },
+  { front: './images/card12.png', back: './images/back12.png' },
+  { front: './images/card13.png', back: './images/back13.png' },
+  { front: './images/card14.png', back: './images/back14.png' },
+  { front: './images/card15.png', back: './images/back15.png' },
+  { front: './images/card16.png', back: './images/back16.png' },
+  { front: './images/card17.png', back: './images/back17.png' },
+  { front: './images/card18.png', back: './images/back18.png' },
+  { front: './images/card19.png', back: './images/back19.png' },
+  { front: './images/card20.png', back: './images/back20.png' },
+  { front: './images/card21.png', back: './images/back21.png' },
+  { front: './images/card22.png', back: './images/back22.png' },
+  { front: './images/card23.png', back: './images/back23.png' },
+  { front: './images/card24.png', back: './images/back24.png' },
+  { front: './images/card25.png', back: './images/back25.png' },
+  { front: './images/card26.png', back: './images/back26.png' },
+  { front: './images/card27.png', back: './images/back27.png' },
+  { front: './images/card28.png', back: './images/back28.png' },
+  { front: './images/card29.png', back: './images/back29.png' },
+  { front: './images/card30.png', back: './images/back30.png' },
+  { front: './images/card31.png', back: './images/back31.png' },
+  { front: './images/card32.png', back: './images/back32.png' },
+  { front: './images/card33.png', back: './images/back33.png' },
+  { front: './images/card34.png', back: './images/back34.png' },
+  { front: './images/card35.png', back: './images/back35.png' },
+  { front: './images/card36.png', back: './images/back36.png' },
+  { front: './images/card37.png', back: './images/back37.png' },
+  { front: './images/card38.png', back: './images/back38.png' },
+  { front: './images/card39.png', back: './images/back39.png' },
+  { front: './images/card40.png', back: './images/back40.png' },
+  { front: './images/card41.png', back: './images/back41.png' },
+  { front: './images/card42.png', back: './images/back42.png' },
+  { front: './images/card43.png', back: './images/back43.png' },
+  { front: './images/card44.png', back: './images/back44.png' },
+  { front: './images/card45.png', back: './images/back45.png' },
+  { front: './images/card46.png', back: './images/back46.png' },
+  { front: './images/card47.png', back: './images/back47.png' },
+    ];
+    const rainbowCards = [
+    { front: './images/card201.jpg', back: './images/back1.png' },
+  { front: './images/card202.jpg', back: './images/back2.png' },
+  { front: './images/card203.jpg', back: './images/back3.png' },
+  { front: './images/card204.jpg', back: './images/back4.png' },
+  { front: './images/card205.jpg', back: './images/back5.png' },
+  { front: './images/card206.jpg', back: './images/back6.png' },
+  { front: './images/card207.jpg', back: './images/back7.png' },
+  { front: './images/card208.jpg', back: './images/back8.png' },
+  { front: './images/card209.jpg', back: './images/back9.png' },
+  { front: './images/card210.jpg', back: './images/back10.png' },
+  { front: './images/card211.jpg', back: './images/back11.png' },
+  { front: './images/card212.jpg', back: './images/back12.png' },
+  { front: './images/card213.jpg', back: './images/back13.png' },
+  { front: './images/card214.jpg', back: './images/back14.png' },
+  { front: './images/card215.jpg', back: './images/back15.png' },
+  { front: './images/card216.jpg', back: './images/back16.png' },
+  { front: './images/card217.jpg', back: './images/back17.png' },
+  { front: './images/card218.jpg', back: './images/back18.png' },
+  { front: './images/card219.jpg', back: './images/back19.png' },
+  { front: './images/card220.jpg', back: './images/back20.png' },
+  { front: './images/card221.jpg', back: './images/back21.png' },
+  { front: './images/card222.jpg', back: './images/back22.png' },
+  { front: './images/card223.jpg', back: './images/back23.png' },
+  { front: './images/card224.jpg', back: './images/back24.png' },
+  { front: './images/card225.jpg', back: './images/back25.png' },
+  { front: './images/card226.jpg', back: './images/back26.png' },
+  { front: './images/card227.jpg', back: './images/back27.png' },
+  { front: './images/card228.jpg', back: './images/back28.png' },
+  { front: './images/card229.jpg', back: './images/back29.png' },
+  { front: './images/card230.jpg', back: './images/back30.png' },
+  { front: './images/card231.jpg', back: './images/back31.png' },
+  { front: './images/card232.jpg', back: './images/back32.png' },
+  { front: './images/card233.jpg', back: './images/back33.png' },
+  { front: './images/card234.jpg', back: './images/back34.png' },
+  { front: './images/card235.jpg', back: './images/back35.png' },
+  { front: './images/card236.jpg', back: './images/back36.png' },
+  { front: './images/card237.jpg', back: './images/back37.png' },
+  { front: './images/card238.jpg', back: './images/back38.png' },
+  { front: './images/card239.jpg', back: './images/back39.png' },
+  { front: './images/card240.jpg', back: './images/back40.png' },
+  { front: './images/card241.jpg', back: './images/back41.png' },
+  { front: './images/card242.jpg', back: './images/back42.png' },
+  { front: './images/card243.jpg', back: './images/back43.png' },
+  { front: './images/card244.jpg', back: './images/back44.png' },
+  { front: './images/card245.jpg', back: './images/back45.png' },
+  { front: './images/card246.jpg', back: './images/back46.png' },
+  { front: './images/card247.jpg', back: './images/back47.png' },
+    ];
+
+    const regularContainer = document.getElementById('regular-cards');
+    const rainbowContainer = document.getElementById('rainbow-cards');
+    const overlay = document.getElementById('overlay');
+    const overlayFront = document.getElementById('overlay-front');
+    const overlayBack = document.getElementById('overlay-back');
+
+    function createCard(cardData, container) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.style.backgroundImage = `url(${cardData.front})`;
+      container.appendChild(card);
+
+      card.addEventListener('click', () => openOverlay(cardData));
+      card.addEventListener('mousemove', e => handleMouseMove(e, card, 80));
+      card.addEventListener('mouseleave', () => resetTransform(card));
+    }
+
+    regularCards.forEach(c => createCard(c, regularContainer));
+    rainbowCards.forEach(c => createCard(c, rainbowContainer));
+
+    function handleMouseMove(e, el, intensity = 80) {
+      const rect = el.getBoundingClientRect();
+      const mouseX = (e.clientX - rect.left) / rect.width;
+      const mouseY = (e.clientY - rect.top) / rect.height;
+      const rotateX = (mouseY - 0.5) * -intensity;
+      const rotateY = (mouseX - 0.5) * intensity;
+      el.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    }
+
+    function resetTransform(el) {
+      el.style.transform = 'rotateX(0deg) rotateY(0deg)';
+    }
+
+    function openOverlay(cardData) {
+      overlayFront.style.backgroundImage = `url(${cardData.front})`;
+      overlayBack.style.backgroundImage = `url(${cardData.back})`;
+      overlay.classList.add('show');
+    }
+
+    function closeOverlay() {
+      overlay.classList.remove('show');
+    }
+  </script>
+</body>
+</html>
