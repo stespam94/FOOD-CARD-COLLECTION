@@ -49,7 +49,12 @@
   </style>
 </head>
 <body>
-  <h1>FOOD COLLECTION</h1>
+  <h1>FOOD CARD COLLECTION</h1>
+
+  <div class="section" id="pack-section">
+    <h2>PACK E BOX</h2>
+    <div id="pack-cards"></div>
+  </div>  
 
   <div class="section" id="regular-section">
     <h2>CARTE REGOLARI</h2>
@@ -61,7 +66,7 @@
     <div id="rainbow-cards"></div>
   </div>
 
-  <div id="overlay" class="overlay" onclick="closeOverlay()">
+  <div id="overlay" class="overlay">
     <div class="overlay-content">
       <div id="overlay-front" class="overlay-card"></div>
       <div id="overlay-back" class="overlay-card"></div>
@@ -69,6 +74,10 @@
   </div>
 
   <script>
+    const packCards = [
+  { front: './images/packfront.png', type: 'pack'},
+  { front: './images/packbox.png', type: 'pack'}
+];
     const regularCards = [
     { front: './images/card1.png', back: './images/back1.png' },
   { front: './images/card2.png', back: './images/back2.png' },
@@ -170,6 +179,7 @@
 
     const regularContainer = document.getElementById('regular-cards');
     const rainbowContainer = document.getElementById('rainbow-cards');
+    const packContainer = document.getElementById('pack-cards');
     const overlay = document.getElementById('overlay');
     const overlayFront = document.getElementById('overlay-front');
     const overlayBack = document.getElementById('overlay-back');
@@ -185,6 +195,7 @@
       card.addEventListener('mouseleave', () => resetTransform(card));
     }
 
+    packCards.forEach(c => createCard(c, packContainer));
     regularCards.forEach(c => createCard(c, regularContainer));
     rainbowCards.forEach(c => createCard(c, rainbowContainer));
 
@@ -202,14 +213,25 @@
     }
 
     function openOverlay(cardData) {
-      overlayFront.style.backgroundImage = `url(${cardData.front})`;
-      overlayBack.style.backgroundImage = `url(${cardData.back})`;
-      overlay.classList.add('show');
-    }
+  overlayFront.style.backgroundImage = `url(${cardData.front})`;
+  
+  if (cardData.type === 'pack') {
+    overlayBack.style.display = 'none';  // nasconde il retro
+  } else {
+    overlayBack.style.display = 'block'; // mostra il retro
+    overlayBack.style.backgroundImage = `url(${cardData.back})`;
+  }
+  
+  overlay.classList.add('show');
+}
 
-    function closeOverlay() {
-      overlay.classList.remove('show');
-    }
+function closeOverlay(event) {
+  if (event.target.id === 'overlay') {
+    overlay.classList.remove('show');
+  }
+}
+
+overlay.addEventListener('click', closeOverlay);
   </script>
 </body>
 </html>
