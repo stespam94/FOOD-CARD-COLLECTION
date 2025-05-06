@@ -28,18 +28,24 @@
       pointer-events: all;
     }
     .overlay-content {
-      display: flex;
-      gap: 20px;
-    }
-    .overlay-card {
-      width: 200px;
-      height: 300px;
-      background-size: cover;
-      background-position: center;
-      border-radius: 20px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.7);
-      transition: transform 0.3s ease;
-    }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  max-width: 90%;
+}
+.overlay-card {
+  width: 45vw;
+  max-width: 300px;
+  height: auto;
+  aspect-ratio: 2/3; /* Mantiene il rapporto 2:3 */
+  background-size: cover;
+  background-position: center;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.7);
+  transition: transform 0.3s ease;
+}
   </style>
 </head>
 <body>
