@@ -6,9 +6,12 @@
   <title>FOOD COLLECTION</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
   <style>
+    #close-button { position: absolute; top: 20px; right: 30px; background: transparent; border: none; color: white; font-size: 2rem; cursor: pointer; z-index: 1100;}
+#close-button:hover { color: #ff6666;}
     body { text-align: center; font-family: sans-serif; background: #222; color: white; }
     h1 { font-family: 'Cinzel', serif;}
     h2 {font-family: 'Cinzel', serif;}
+    .card.horizontal { width: 270px; height: 180px; }
     .section { margin: 20px 0; }
     .card { width: 180px; height: 270px; margin: 10px; display: inline-block; border-radius: 10px; background-size: cover; background-position: center; transition: transform 0.3s ease; cursor: pointer; }
     .overlay {
@@ -69,12 +72,19 @@
     <div id="rainbow-cards"></div>
   </div>
 
+  <div class="section" id="secret-section">
+    <h2>CARTE SUPER RARE SEGRETE</h2>
+    <div id="secret-cards"></div>
+  </div>
+
   <div id="overlay" class="overlay">
+    <button id="close-button">X</button>
     <div class="overlay-content">
       <div id="overlay-front" class="overlay-card"></div>
       <div id="overlay-back" class="overlay-card"></div>
     </div>
   </div>
+  
 
   <script>
     const packCards = [
@@ -179,26 +189,38 @@
   { front: './images/card246.jpg', back: './images/back46.png' },
   { front: './images/card247.jpg', back: './images/back47.png' },
     ];
+    const secretCards = [
+  { front: './images/card301.jpg', back: './images/back301.jpg', orientation: 'horizontal' },
+  { front: './images/card302.jpg', back: './images/back302.jpg', orientation: 'horizontal' },
+  { front: './images/card303.jpg', back: './images/back303.jpg', orientation: 'horizontal' },
+];
 
     const regularContainer = document.getElementById('regular-cards');
     const rainbowContainer = document.getElementById('rainbow-cards');
     const packContainer = document.getElementById('pack-cards');
+    const secretContainer = document.getElementById('secret-cards');
     const overlay = document.getElementById('overlay');
     const overlayFront = document.getElementById('overlay-front');
     const overlayBack = document.getElementById('overlay-back');
 
     function createCard(cardData, container) {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.style.backgroundImage = `url(${cardData.front})`;
-      container.appendChild(card);
+  const card = document.createElement('div');
+  card.className = 'card';
+  
+  if (cardData.orientation === 'horizontal') {
+    card.classList.add('horizontal');
+  }
+  
+  card.style.backgroundImage = `url(${cardData.front})`;
+  container.appendChild(card);
 
-      card.addEventListener('click', () => openOverlay(cardData));
-      card.addEventListener('mousemove', e => handleMouseMove(e, card, 80));
-      card.addEventListener('mouseleave', () => resetTransform(card));
-    }
+  card.addEventListener('click', () => openOverlay(cardData));
+  card.addEventListener('mousemove', e => handleMouseMove(e, card, 80));
+  card.addEventListener('mouseleave', () => resetTransform(card));
+}
 
     packCards.forEach(c => createCard(c, packContainer));
+    secretCards.forEach(c => createCard(c, secretContainer));
     regularCards.forEach(c => createCard(c, regularContainer));
     rainbowCards.forEach(c => createCard(c, rainbowContainer));
 
@@ -217,22 +239,36 @@
 
     function openOverlay(cardData) {
   overlayFront.style.backgroundImage = `url(${cardData.front})`;
-  
+
   if (cardData.type === 'pack') {
-    overlayBack.style.display = 'none';  // nasconde il retro
+    overlayBack.style.display = 'none';
+    overlayFront.style.aspectRatio = '2/3';
   } else {
-    overlayBack.style.display = 'block'; // mostra il retro
+    overlayBack.style.display = 'block';
     overlayBack.style.backgroundImage = `url(${cardData.back})`;
   }
-  
+
+  if (cardData.orientation === 'horizontal') {
+    overlayFront.style.aspectRatio = '3/2';
+    overlayBack.style.aspectRatio = '3/2';
+  } else {
+    overlayFront.style.aspectRatio = '2/3';
+    overlayBack.style.aspectRatio = '2/3';
+  }
+
   overlay.classList.add('show');
 }
 
 function closeOverlay(event) {
+  if (event.target.id === 'overlay') {
     overlay.classList.remove('show');
   }
+}
 
 overlay.addEventListener('click', closeOverlay);
+document.getElementById('close-button').addEventListener('click', () => {
+  overlay.classList.remove('show');
+});
   </script>
 </body>
 </html>
