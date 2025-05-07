@@ -45,12 +45,16 @@
   width: 55vw;
   max-width: 350px;
   height: auto;
-  aspect-ratio: 2/3; /* Mantiene il rapporto 2:3 */
+  aspect-ratio: 2/3;
   background-size: cover;
   background-position: center;
   border-radius: 10px;
   box-shadow: 0 0 30px rgba(0,0,0,0.7);
   transition: transform 0.3s ease;
+}
+
+.overlay-card.horizontal {
+  max-width: 500px;  /* ingrandisce le carte orizzontali */
 }
   </style>
 </head>
@@ -242,18 +246,23 @@
 
   if (cardData.type === 'pack') {
     overlayBack.style.display = 'none';
+    overlayFront.classList.remove('horizontal');
     overlayFront.style.aspectRatio = '2/3';
   } else {
     overlayBack.style.display = 'block';
     overlayBack.style.backgroundImage = `url(${cardData.back})`;
-  }
 
-  if (cardData.orientation === 'horizontal') {
-    overlayFront.style.aspectRatio = '3/2';
-    overlayBack.style.aspectRatio = '3/2';
-  } else {
-    overlayFront.style.aspectRatio = '2/3';
-    overlayBack.style.aspectRatio = '2/3';
+    if (cardData.orientation === 'horizontal') {
+      overlayFront.classList.add('horizontal');
+      overlayBack.classList.add('horizontal');
+      overlayFront.style.aspectRatio = '3/2';
+      overlayBack.style.aspectRatio = '3/2';
+    } else {
+      overlayFront.classList.remove('horizontal');
+      overlayBack.classList.remove('horizontal');
+      overlayFront.style.aspectRatio = '2/3';
+      overlayBack.style.aspectRatio = '2/3';
+    }
   }
 
   overlay.classList.add('show');
